@@ -1,0 +1,46 @@
+<h1>WatchRoulette</h1>
+
+<p>
+  Logged in as {{ request.user.username }} |
+  <a href="{% url 'watch-add' %}">Add</a> |
+  <a href="{% url 'logout' %}">Logout</a>
+</p>
+
+<p>Unwatched items: {{ unwatched_count }}</p>
+
+<p>
+  <a href="{% url 'watch-dashboard' %}?spin=1">Spin Roulette</a>
+</p>
+
+{% if pick %}
+  <h2>🎲 Your pick:</h2>
+  <p><b>{{ pick.title }}</b> ({{ pick.get_item_type_display }}) - {{ pick.genre }}</p>
+  <p>{{ pick.notes }}</p>
+
+  <p>
+    <a href="{% url 'watch-watched' pick.id %}">Mark Watched</a> |
+    <a href="{% url 'watch-rate' pick.id %}">Rate</a>
+  </p>
+{% endif %}
+
+<hr>
+
+<h2>Your Watchlist</h2>
+
+<ul>
+  {% for i in items %}
+    <li>
+      <b>{{ i.title }}</b> ({{ i.get_item_type_display }})
+      {% if i.watched %}✅ watched{% else %}⏳ not watched{% endif %}
+      {% if i.rating %} | ⭐ {{ i.rating }}/10{% endif %}
+      <br>
+      {{ i.genre }} — {{ i.notes }}
+      <br>
+      <a href="{% url 'watch-watched' i.id %}">Mark Watched</a> |
+      <a href="{% url 'watch-rate' i.id %}">Rate</a>
+    </li>
+    <hr>
+  {% empty %}
+    <li>No items yet. Add some.</li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,11 @@
+<h1>Profiles</h1>
+
+<ul>
+    {% for profile in profiles %}
+        <li>
+            {{ profile.name }} - {{ profile.email }} - {{ profile.age }}
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="/accounts/logout/">Logout</a>
