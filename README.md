@@ -45,8 +45,8 @@ Primary focus of this repository is the watch/ app.
 ```
 
 🚀 Setup & Run Locally
-git clone https://github.com/Muhammed-Azif-A-006/Django_watch.git
-cd Django_watch
+git clone https://github.com/Muhammed-Azif-A-006/django-watchroulette.git
+cd django-watchroulette
 
 python -m venv venv
 source venv/bin/activate
