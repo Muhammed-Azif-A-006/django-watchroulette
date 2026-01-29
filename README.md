@@ -76,3 +76,24 @@ After login, users land directly on WatchRoulette
 This repository contains additional Django apps created during learning.
 They are not the primary focus of this project.
 
+## 📸 Screenshots
+
+### Dashboard (Normal State)
+Shows the main dashboard with the watchlist and roulette option.
+
+<img src="screenshots/normaldash.png" width="700">
+
+---
+
+### Mark as Watched Feedback
+Displays success feedback when an item is marked as watched.
+
+<img src="screenshots/watchmarked.png" width="700">
+
+---
+
+### Rating Feedback
+Shows validation and confirmation when rating an item.
+
+<img src="screenshots/rating.png" width="700">
+
