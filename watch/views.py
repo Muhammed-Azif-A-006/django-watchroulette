@@ -19,7 +19,7 @@ def dashboard(request):
 @login_required
 def add_item(request):
 	if request.method == "POST":
-		form = WatchItemForm(request.POST)
+		form = WatchItemForm(request.POST, user = request.user)
 		if form.is_valid():
 			item = form.save(commit=False)
 			item.added_by = request.user
@@ -29,7 +29,7 @@ def add_item(request):
 			return redirect("watch-dashboard")
 
 	else:
-		form = WatchItemForm()
+		form = WatchItemForm(user = request.user)
 
 	return render(request, "watch/add_item.html", {"form": form})
 
