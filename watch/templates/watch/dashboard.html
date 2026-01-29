@@ -1,5 +1,13 @@
 <h1>WatchRoulette</h1>
 
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li><strong>{{ message }} </strong></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 <p>
   Logged in as {{ request.user.username }} |
   <a href="{% url 'watch-add' %}">Add</a> |

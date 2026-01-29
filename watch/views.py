@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 import random
 from .models import WatchItem
 from .forms import WatchItemForm
-
+from django.contrib import messages
 @login_required
 def dashboard(request):
 	items = WatchItem.objects.filter(added_by = request.user).order_by("-created_at")
@@ -12,7 +12,7 @@ def dashboard(request):
 	pick = None
 
 	if request.GET.get("spin") == "1" and unwatched.exists():
-		pick = random.choices(list(unwatched))
+		pick = random.choice(list(unwatched))
 
 	return render(request, "watch/dashboard.html",{"items" : items, "unwatched_count" : unwatched.count(), "pick" : pick})
 
@@ -24,7 +24,10 @@ def add_item(request):
 			item = form.save(commit=False)
 			item.added_by = request.user
 			item.save()
+
+			messages.success(request,"Item added to your watch list ..")
 			return redirect("watch-dashboard")
+
 	else:
 		form = WatchItemForm()
 
@@ -35,6 +38,7 @@ def mark_watched(request, item_id):
 	item = get_object_or_404(WatchItem, id=item_id, added_by=request.user)
 	item.watched = True
 	item.save()
+	messages.success(request, "Marked as watched ✅")
 	return redirect("watch-dashboard")
 
 @login_required
@@ -50,7 +54,9 @@ def rate_item(request, item_id):
 		if rating is not None and 1 <= rating <= 10:
 			item.rating = rating
 			item.save()
+			messages.success(request, "Rating saved ⭐")
 			return redirect("watch-dashboard")
+
 
 		return render(request, "watch/rate_item.html", {
 			"item": item,
