@@ -6,7 +6,7 @@ from .forms import WatchItemForm
 from django.contrib import messages
 @login_required
 def dashboard(request):
-	items = WatchItem.objects.filter(added_by = request.user).order_by("-created_at")
+	items = WatchItem.objects.select_related("added_by").filter(added_by = request.user).order_by("-created_at")
 	unwatched = items.filter(watched = False)
 
 	pick = None
