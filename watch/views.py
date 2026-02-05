@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 import random
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import WatchItem
 from .forms import WatchItemForm
 from django.contrib import messages
@@ -15,6 +17,27 @@ def dashboard(request):
 		pick = random.choice(list(unwatched))
 
 	return render(request, "watch/dashboard.html",{"items" : items, "unwatched_count" : unwatched.count(), "pick" : pick})
+
+class DashboardView(LoginRequiredMixin,ListView):
+
+	model = WatchItem
+	template_name = "watch/dashboard.html"
+	context_object_name = "items"
+
+	def get_queryset(self):
+		return( WatchItem.objects.select_related("added_by").filter(added_by = self.request.user).order_by("-created_at"))
+
+	def get_context_data(self,**kwargs):
+		context = super().get_context_data(**kwargs)
+		items = context["items"]
+		unwatched = items.filter(watched = False)
+		context["unwatched_count"] = unwatched.count()
+		context["pick"] = None
+
+		if self.request.GET.get("spin") == "1" and unwatched.exists():
+			context["pick"] = random.choice(list(unwatched))
+		return context
+
 
 @login_required
 def add_item(request):
